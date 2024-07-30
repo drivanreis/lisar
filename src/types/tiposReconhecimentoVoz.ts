@@ -1,15 +1,17 @@
 // src/tipos/tiposReconhecimentoVoz.ts
 
-export interface tpReconhecimentoVoz extends EventTarget {
+export interface ReconhecimentoVoz extends EventTarget {
   start(): void;
   stop(): void;
-  onresult: (event: tpEventoReconhecimentoVoz) => void;
+  onresult: (event: EventoReconhecimentoVoz) => void;
+  onstart: () => void;
+  onend: () => void;
   lang: string;
   interimResults: boolean;
   maxAlternatives: number;
 }
 
-export interface tpEventoReconhecimentoVoz extends Event {
+export interface EventoReconhecimentoVoz extends Event {
   results: {
     [key: number]: {
       [key: number]: {
@@ -19,11 +21,13 @@ export interface tpEventoReconhecimentoVoz extends Event {
   };
 }
 
-export interface tpWindow {
-  SpeechRecognition: {
-    new (): tpReconhecimentoVoz;
-  };
-  webkitSpeechRecognition: {
-    new (): tpReconhecimentoVoz;
-  };
+declare global {
+  interface Window {
+    SpeechRecognition: {
+      new (): ReconhecimentoVoz;
+    };
+    webkitSpeechRecognition: {
+      new (): ReconhecimentoVoz;
+    };
+  }
 }
